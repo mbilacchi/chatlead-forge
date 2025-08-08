@@ -18,9 +18,10 @@ interface ChatPreviewProps {
   description: string;
   questions: Question[];
   primaryColor?: string;
+  assistantName?: string;
 }
 
-const ChatPreview = ({ title, description, questions, primaryColor = '#8B5CF6' }: ChatPreviewProps) => {
+const ChatPreview = ({ title, description, questions, primaryColor = '#8B5CF6', assistantName = 'Assistente' }: ChatPreviewProps) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1); // -1 = intro
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [userInput, setUserInput] = useState('');
@@ -42,7 +43,7 @@ const ChatPreview = ({ title, description, questions, primaryColor = '#8B5CF6' }
       const introMessage: ChatMessage = {
         id: '1',
         type: 'bot',
-        content: `Olá! 👋 Bem-vindo(a)! Eu vou te ajudar a conseguir o "${title}". São apenas algumas perguntas rápidas e você terá acesso imediato ao material. Vamos começar?`,
+        content: `Olá! 👋 Eu sou o ${assistantName}! Bem-vindo(a)! Eu vou te ajudar a conseguir o "${title}". São apenas algumas perguntas rápidas e você terá acesso imediato ao material. Vamos começar?`,
         timestamp: new Date()
       };
       setMessages([introMessage]);
