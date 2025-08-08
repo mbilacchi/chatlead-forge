@@ -1,10 +1,14 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { User, Session } from '@supabase/supabase-js'
-import { supabase } from '@/lib/supabase'
+
+// Mock user type for testing
+interface MockUser {
+  id: string
+  email: string
+}
 
 interface AuthContextType {
-  user: User | null
-  session: Session | null
+  user: MockUser | null
+  session: any
   loading: boolean
   signUp: (email: string, password: string) => Promise<void>
   signIn: (email: string, password: string) => Promise<void>
@@ -14,49 +18,50 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [session, setSession] = useState<Session | null>(null)
+  const [user, setUser] = useState<MockUser | null>(null)
+  const [session, setSession] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-      setUser(session?.user ?? null)
-      setLoading(false)
-    })
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-      setUser(session?.user ?? null)
-      setLoading(false)
-    })
-
-    return () => subscription.unsubscribe()
+    // Check localStorage for saved user (mock persistence)
+    const savedUser = localStorage.getItem('mockUser')
+    if (savedUser) {
+      const userData = JSON.parse(savedUser)
+      setUser(userData)
+      setSession({ user: userData })
+    }
+    setLoading(false)
   }, [])
 
   const signUp = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    })
-    if (error) throw error
+    // Mock signup - simulate delay
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    
+    // Simulate success (in real app, this would create account)
+    console.log('Mock signup successful for:', email)
   }
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
-    if (error) throw error
+    // Mock signin - simulate delay
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    
+    // Simple mock validation
+    if (email === 'admin@test.com' && password === '123456') {
+      const mockUser = { id: '1', email: email }
+      setUser(mockUser)
+      setSession({ user: mockUser })
+      localStorage.setItem('mockUser', JSON.stringify(mockUser))
+    } else {
+      throw new Error('Email ou senha incorretos. Use admin@test.com / 123456 para testar.')
+    }
   }
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut()
-    if (error) throw error
+    // Mock signout
+    await new Promise(resolve => setTimeout(resolve, 500))
+    setUser(null)
+    setSession(null)
+    localStorage.removeItem('mockUser')
   }
 
   const value = {

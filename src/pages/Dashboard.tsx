@@ -3,11 +3,23 @@ import { useLeadMagnets } from '@/hooks/useLeadMagnets';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Plus, BarChart3, Users, Eye, Download, Edit, Trash2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Plus, BarChart3, Users, Eye, Download, Edit, Trash2, LogOut } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Dashboard = () => {
   const { leadMagnets, analytics, getAnalyticsByMagnetId, loading } = useLeadMagnets();
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate('/login');
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    }
+  };
 
   if (loading) {
     return (
@@ -28,14 +40,24 @@ const Dashboard = () => {
           <div className="flex justify-between items-center py-6">
             <div>
               <h1 className="text-3xl font-bold text-foreground">Lead Magnet Chat</h1>
-              <p className="text-muted-foreground mt-1">Crie formulários conversacionais que convertem</p>
+              <p className="text-muted-foreground mt-1">Bem-vindo, {user?.email}! Crie formulários conversacionais que convertem</p>
             </div>
-            <Link to="/create">
-              <Button className="bg-gradient-primary hover:opacity-90 shadow-lg">
-                <Plus className="w-4 h-4 mr-2" />
-                Criar Lead Magnet
+            <div className="flex gap-2">
+              <Link to="/create">
+                <Button className="bg-gradient-primary hover:opacity-90 shadow-lg">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Criar Lead Magnet
+                </Button>
+              </Link>
+              <Button 
+                onClick={handleSignOut}
+                variant="outline"
+                className="transition-smooth"
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                Sair
               </Button>
-            </Link>
+            </div>
           </div>
         </div>
       </header>
