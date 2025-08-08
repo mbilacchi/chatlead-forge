@@ -18,10 +18,10 @@ interface ChatMessage {
 const ChatForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { getLeadMagnetById, submitLead, trackView, trackStart } = useLeadMagnets();
+  const { getLeadMagnetById, submitLead, trackView, trackStart, loading } = useLeadMagnets();
   const { toast } = useToast();
 
-  const [leadMagnet, setLeadMagnet] = useState(getLeadMagnetById(id!));
+  const [leadMagnet, setLeadMagnet] = useState<any>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1); // -1 = intro
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [userInput, setUserInput] = useState('');
@@ -30,25 +30,36 @@ const ChatForm = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
 
+  // Set lead magnet when data is loaded
   useEffect(() => {
-    if (!leadMagnet) {
-      navigate('/404');
-      return;
+    if (!loading && id) {
+      const foundLeadMagnet = getLeadMagnetById(id);
+      if (!foundLeadMagnet) {
+        console.log('Lead magnet not found for id:', id);
+        navigate('/dashboard');
+        return;
+      }
+      setLeadMagnet(foundLeadMagnet);
     }
+  }, [loading, id, getLeadMagnetById, navigate]);
 
-    // Track view
-    trackView(leadMagnet.id);
+  // Initialize chat when lead magnet is set
+  useEffect(() => {
+    if (leadMagnet) {
+      // Track view
+      trackView(leadMagnet.id);
 
-    // Add intro message
-    const introMessage: ChatMessage = {
-      id: '1',
-      type: 'bot',
-      content: `Olá! 👋 Bem-vindo(a)! Eu vou te ajudar a conseguir o "${leadMagnet.title}". São apenas algumas perguntas rápidas e você terá acesso imediato ao material. Vamos começar?`,
-      timestamp: new Date()
-    };
+      // Add intro message
+      const introMessage: ChatMessage = {
+        id: '1',
+        type: 'bot',
+        content: `Olá! 👋 Bem-vindo(a)! Eu vou te ajudar a conseguir o "${leadMagnet.title}". São apenas algumas perguntas rápidas e você terá acesso imediato ao material. Vamos começar?`,
+        timestamp: new Date()
+      };
 
-    setMessages([introMessage]);
-  }, []);
+      setMessages([introMessage]);
+    }
+  }, [leadMagnet, trackView]);
 
   const addMessage = (type: 'bot' | 'user', content: string) => {
     const message: ChatMessage = {
@@ -202,8 +213,26 @@ const ChatForm = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-hero flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground">Carregando formulário...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (!leadMagnet) {
-    return <div>Lead magnet não encontrado</div>;
+    return (
+      <div className="min-h-screen bg-gradient-hero flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <p className="text-muted-foreground">Lead magnet não encontrado</p>
+          <Button onClick={() => navigate('/dashboard')}>Voltar ao Dashboard</Button>
+        </div>
+      </div>
+    );
   }
 
   const progress = currentQuestionIndex >= 0 
