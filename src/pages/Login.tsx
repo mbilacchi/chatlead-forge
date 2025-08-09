@@ -7,14 +7,13 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useToast } from '@/hooks/use-toast'
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react'
-import LogoUploader from '@/components/LogoUploader'
+import LogoDisplay from '@/components/LogoDisplay'
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [companyLogo, setCompanyLogo] = useState<string | null>(null)
   const { signIn, user } = useAuth()
   const { toast } = useToast()
   const navigate = useNavigate()
@@ -48,44 +47,18 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-card px-4">
-      <div className="w-full max-w-4xl grid lg:grid-cols-2 gap-8 items-center">
-        {/* Logo Upload Section */}
-        <div className="space-y-6">
-          <div className="text-center lg:text-left">
-            <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              Sistema Empresarial
-            </h1>
-            <p className="text-muted-foreground mt-2">
-              Personalize com a logo da sua empresa
-            </p>
-          </div>
-          
-          <LogoUploader 
-            onLogoChange={setCompanyLogo}
-            currentLogo={companyLogo}
-          />
-          
-          {companyLogo && (
-            <div className="text-center p-6 bg-card rounded-lg border">
-              <p className="text-sm text-muted-foreground mb-3">Preview da sua marca:</p>
-              <img 
-                src={companyLogo} 
-                alt="Logo da empresa" 
-                className="h-16 w-auto mx-auto"
-              />
-            </div>
-          )}
-        </div>
-
-        {/* Login Form */}
+      <div className="w-full max-w-md">
         <Card className="w-full">
-          <CardHeader className="text-center space-y-1">
-            <CardTitle className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              Entrar na sua conta
-            </CardTitle>
-            <CardDescription>
-              Digite seu email e senha para acessar o sistema
-            </CardDescription>
+          <CardHeader className="text-center space-y-4">
+            <LogoDisplay size="lg" className="mx-auto" />
+            <div>
+              <CardTitle className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                Sistema Empresarial
+              </CardTitle>
+              <CardDescription>
+                Digite seu email e senha para acessar o sistema
+              </CardDescription>
+            </div>
           </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
