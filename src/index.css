@@ -18,11 +18,11 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    /* Primary - Modern purple for conversion focus */
-    --primary: 262 83% 58%;
+    /* Primary - Wise Tech Red inspired */
+    --primary: 355 85% 55%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 262 83% 48%;
-    --primary-light: 262 83% 90%;
+    --primary-hover: 355 85% 45%;
+    --primary-light: 355 85% 90%;
 
     /* Secondary - Soft gray */
     --secondary: 240 4.8% 95.9%;
@@ -32,10 +32,10 @@
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
 
-    /* Accent - Conversion green */
-    --accent: 142 76% 36%;
+    /* Accent - Professional burgundy */
+    --accent: 345 75% 35%;
     --accent-foreground: 0 0% 100%;
-    --accent-light: 142 76% 90%;
+    --accent-light: 345 75% 90%;
 
     /* Status colors */
     --success: 142 76% 36%;
@@ -56,18 +56,18 @@
     --chat-bot: 240 4.8% 95.9%;
     --chat-bot-foreground: 240 10% 3.9%;
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(262 83% 58%), hsl(282 83% 68%));
+    /* Gradients - Wise Tech inspired */
+    --gradient-primary: linear-gradient(135deg, hsl(355 85% 55%), hsl(345 75% 45%));
     --gradient-success: linear-gradient(135deg, hsl(142 76% 36%), hsl(162 76% 46%));
-    --gradient-hero: linear-gradient(135deg, hsl(262 83% 58%) 0%, hsl(282 83% 68%) 50%, hsl(302 83% 78%) 100%);
-    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(240 4.8% 98%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(355 85% 55%) 0%, hsl(345 75% 45%) 50%, hsl(335 65% 35%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(355 20% 98%) 100%);
 
     /* Shadows */
     --shadow-sm: 0 1px 2px 0 hsl(240 5.9% 10% / 0.05);
     --shadow-md: 0 4px 6px -1px hsl(240 5.9% 10% / 0.1), 0 2px 4px -1px hsl(240 5.9% 10% / 0.06);
     --shadow-lg: 0 10px 15px -3px hsl(240 5.9% 10% / 0.1), 0 4px 6px -2px hsl(240 5.9% 10% / 0.05);
     --shadow-xl: 0 20px 25px -5px hsl(240 5.9% 10% / 0.1), 0 10px 10px -5px hsl(240 5.9% 10% / 0.04);
-    --shadow-glow: 0 0 30px hsl(262 83% 58% / 0.3);
+    --shadow-glow: 0 0 30px hsl(355 85% 55% / 0.3);
 
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

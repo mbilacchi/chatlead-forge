@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useToast } from '@/hooks/use-toast'
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react'
+import LogoUploader from '@/components/LogoUploader'
 
 const Register = () => {
   const [email, setEmail] = useState('')
@@ -15,6 +16,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [companyLogo, setCompanyLogo] = useState<string | null>(null)
   const { signUp, user } = useAuth()
   const { toast } = useToast()
   const navigate = useNavigate()
@@ -67,15 +69,45 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-card px-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center space-y-1">
-          <CardTitle className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-            Criar sua conta
-          </CardTitle>
-          <CardDescription>
-            Preencha os dados abaixo para criar sua conta
-          </CardDescription>
-        </CardHeader>
+      <div className="w-full max-w-4xl grid lg:grid-cols-2 gap-8 items-center">
+        {/* Logo Upload Section */}
+        <div className="space-y-6">
+          <div className="text-center lg:text-left">
+            <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+              Configure sua Empresa
+            </h1>
+            <p className="text-muted-foreground mt-2">
+              Adicione a logo da sua empresa para personalizar o sistema
+            </p>
+          </div>
+          
+          <LogoUploader 
+            onLogoChange={setCompanyLogo}
+            currentLogo={companyLogo}
+          />
+          
+          {companyLogo && (
+            <div className="text-center p-6 bg-card rounded-lg border">
+              <p className="text-sm text-muted-foreground mb-3">Preview da sua marca:</p>
+              <img 
+                src={companyLogo} 
+                alt="Logo da empresa" 
+                className="h-16 w-auto mx-auto"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Register Form */}
+        <Card className="w-full">
+          <CardHeader className="text-center space-y-1">
+            <CardTitle className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+              Criar sua conta
+            </CardTitle>
+            <CardDescription>
+              Preencha os dados abaixo para criar sua conta
+            </CardDescription>
+          </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
@@ -160,8 +192,9 @@ const Register = () => {
               </Link>
             </p>
           </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }
